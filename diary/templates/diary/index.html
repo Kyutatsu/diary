@@ -1,0 +1,107 @@
+{% extends "diary/base.html" %}
+
+{% load static %}
+{% load mathfilters %}
+
+{% block title_block %}日記一覧{% endblock %}
+
+{% block body %}
+<div class="py-5 bg-light">
+  <div class="container">
+  {% if diaries %}
+    {% for diary in diaries %}
+      {% if forloop.counter|mod:3 == 1 %}<div class="row">{% endif %}
+      <div class="col-lg-4 mb-3">
+        <div class="card mb-4 shadow h-100 border border-info">
+          <a href="{% url 'diary:individual' diary.pk %}#for_move">
+            <img class="card-img-top img-fluid drawing"
+              {% if diary.picture %}
+                src="{{ diary.picture }}"
+              {% else %}
+                src="{% static 'diary/icons/noimg.svg' %}"
+              {% endif %}
+                alt="drawing">
+          </a>
+            
+          <div class="card-body pt-1 pb-0 px-1">
+            <p class="card-text font-weight-bold">
+              <a class="text-info border-bottom shadow-sm"
+                  href="{% url 'diary:individual' diary.pk %}#for_move">
+                {{ diary.a_title }}
+              </a>
+            </p>
+            <p class="card-text border-bottom shadow-sm">
+              {{ diary.text20 }}
+            </p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a class="btn btn-sm btn-outline-info shadow-sm"
+                       href="{% url 'diary:individual' pk=diary.pk %}#for_move">
+                  閲覧
+                </a>
+                <div class="btn btn-sm btn-outline-danger shadow-sm"
+                     data-next-url="{% url 'diary:delete_diary' pk=diary.pk %}"
+                     onclick="confDelete2(this);" name="ddd" value="a">
+                  削除
+                </div>
+              </div>
+            </div>
+            <p class="col align-self-end small text-muted shadow-sm text-right
+            mb-0">
+                {{ diary.created_date|date:"y年n月j日" }}
+            </p>
+          </div>
+        </div>
+      </div>
+    {% if forloop.counter|mod:3 == 0 or forloop.last %}</div>{% endif %}
+    {% endfor %}
+
+    {% comment %}ページネーション{% endcomment %}
+    <div class="row mt-5">
+      <nav class="col-lg-4 mb-3" >
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a href="?page={{ page_obj.previous_page_number }}"
+                 class="page-link" aria-label="Previous">
+              &laquo;
+            </a>
+          </li>
+          {% endif %}
+
+          {% for each_page in page_obj.paginator.page_range %}
+          <li class="page-item
+            {% if each_page == page_obj.number %}
+              active
+            {% endif %}
+              ">
+            <a class="page-link" href="?page={{ each_page }}">
+              {{ each_page }}
+            </a>
+          </li>
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a href="?page={{ page_obj.next_page_number }}"
+                                             class="page-link">
+              &raquo;
+            </a>
+          </li>
+          {% endif %}
+
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+</div>
+
+{% else %}
+<h3><a href="{% url 'diary:make_diary' %}">さいしょのにっきをかこう！</a></h3>
+{% endif %}
+
+<script src="{% static 'diary/confirm.js' %}"></script>
+
+{% endblock %}
+

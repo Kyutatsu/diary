@@ -1,0 +1,80 @@
+{% extends "diary/base.html" %}
+
+{% load static %}
+
+{% block title_block %}{{ article.a_title }}{% endblock %}
+    
+{% block head %}
+<link
+  href="https://fonts.googleapis.com/css?family=Kosugi+Maru|M+PLUS+1p|Notable|Noto+Sans+JP"
+  rel="stylesheet">
+
+<!-- 時間ある時にfontを切り替えるjs書く-->
+<style>
+.underline {
+    text-decoration: underline;
+    line-height: 2.0em;
+    color: #555;
+    background-color: #dfdfdf;
+}
+.notable {
+    font-family: 'Notable', sans-serif;
+}
+.Noto {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+.mplus {
+    font-family: 'M PLUS 1p', sans-serif;
+}
+.kosugi {
+    font-family: 'Kosugi Maru', sans-serif;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="bg-light py-2">
+  <div class="container">
+    <div class="row pt-3">
+      <div class="col-lg-5">
+        <h4 id="for_move"
+            class="col-12 text-white text-center p-2 bg-secondary rounded shadow">
+          {{ article.a_title }}
+        </h4>
+        <figure class="figure col-12 px-0 mb-0 bg-white">
+          {% if article.picture %}
+          <!-- 元画像小さいとfluidで満たせないが imgにcol(素)を設定すればよし-->
+          <img class="col p-0 picture figure-img img-fluid rounded shadow"
+               src="{{ article.picture }}" alt="picture"> 
+          {% else %}
+          <img class="picture figure-img img-fluid rounded shadow"
+               src="{% static 'diary/icons/noimg.svg' %}">
+          {% endif %}
+          <figcaption class="figure-caption">
+            <p class="text-right mb-1 border-bottom shadow-sm">
+            投稿日: {{ article.created_date|date:"y年n月j日 ah:i" }}
+            </p>
+          </figcaption>
+        </figure>
+        <a class="editting btn btn-sm btn-outline-info shadow my-2"
+           href="{% url 'diary:update_diary' pk=article.pk %}#for_move">
+          編集
+        </a>
+        <input type="button" id="delete" value="削除"
+                 class="btn btn-sm btn-outline-danger shadow my-2"
+                 data-next-url="{% url 'diary:delete_diary' pk=article.pk %}">
+      </div>
+
+      <div class="col-lg-7">
+        <!-- 文が長い時高さを固定するのが難しかったのでview
+            portのサイズの70%として擬似的に左側flex-boxに合わせた-->
+        <p style="max-height: 70vh; word-break: break-all;"
+        class="kosugi underline text-justify overflow-auto border shadow p-2" >
+            {{ article.text }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'diary/confirm.js' %}"></script>            
+{% endblock %}

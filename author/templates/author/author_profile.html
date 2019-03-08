@@ -1,0 +1,55 @@
+{% extends 'author/base.html' %}
+
+{% load static %}
+
+{% block body %}
+<div class="bg-light py-2">
+  <div class="container">
+    <div class="row pt-3">
+      <div class="col-lg-5 px-4 pt-4">
+        {% if author.icon %}
+          <img src="{{ author.icon }}" alt='profile_image'
+               class="img-fluid rounded-circle shadow-sm bg-white">
+        {% else %}
+          <img src="{% static 'author/icons/noimg.svg' %}"
+               class="img-fluid rounded-circle shadow-sm bg-white">
+        {% endif %}
+
+        <form action="" method='POST'>
+          {% csrf_token %}
+          <input class="mt-5 btn btn-sm btn-outline-info shadow my-2"
+                 type='submit' value='更新'>
+        </form>
+      </div>
+
+      <div class="col-lg-7 p-3">
+        {% if author.name %}
+          <h5 class="text-muted border-bottom shadow-sm p-2">{{ author.name }}</h5>
+        {% endif %}
+        <div class="w-100"></div>
+        {% if email %}
+          <p class="text-muted border-bottom shadow-sm p-1 col-auto">
+            メールアドレス: {{ email }}
+          </p>
+        {% endif %}
+        {% if author.birth %}
+          <p class="text-muted border-bottom shadow-sm p-1 col-auto">
+            誕生日: {{ author.birth }}.
+          </p>
+          <p class="text-muted border-bottom shadow-sm p-1 col-auto">
+            年齢:  {{ author.get_age }}.
+          </p>
+        {% endif %}
+        <div class="col-auto">
+          {% if author.self_introduction %}
+            <p style="max-height: 50vh; word-break: break-all;"
+               class="text-muted border-top overflow-auto">
+              メッセージ: {{ author.self_introduction }}
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

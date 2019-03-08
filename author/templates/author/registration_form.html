@@ -1,0 +1,64 @@
+{% extends 'author/base.html' %}
+
+{% block style %}
+
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+{% endblock %}
+
+{% block body %}
+<div class="text-center">
+  <form class="form-signin" action="" method="POST">
+    {% csrf_token %}
+    {% if form.username.errors %}
+      {% for error in form.username.errors %}
+        <div class="alert alert-danger mt-3">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+    <label for="id_username">UserName</label>
+    <input class="form-control" type="text" name="username"
+           id="id_username" maxlength="150" required>
+    {% if form.password.errors %}
+      {% for error in form.password.errors %}
+        <div class="alert alert-danger mt-3">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+    <label for="id_password">Password</label>
+    <span class="helptext">  ( 英数字または@.+-_ )</span>
+    <input class="form-control" type="password" name="password" required id="id_password">
+    <label for="id_password_r">Password</label>
+    <span class="helptext">   (再入力)</span>
+    <input class="form-control" type="password" name="password_r" required id="id_password_r">
+    {% if form.email.errors %}
+      {% for error in form.email.errors %}
+        <div class="alert alert-danger mt-3">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+    <label for="id_email">メールアドレス(任意)</label>
+    <input class="form-control" type="text" name="email"
+           id="id_email" maxlength="150">
+
+    {% if pass_message %}{{ pass_message }}{% endif %}
+    <button class="btn btn-lg btn-primary btn-block mt-3" type="submit" value="CreateUser">
+        CreateUser
+    </button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+{% block header %}
+<section class="jumbotron text-center mb-0">
+  <div class="container">
+    <h1 class="jumbotron-heading">掲示板</h1>
+    <p class="lead text-muted">
+      あなたが描いた画像やコメントを投稿できるシンプルな掲示板です。</br>
+      好きなトピックに投稿してもいいですし、自分でトピックを立てることもできます。
+    </p>
+    <p>
+    <a href="{% url 'board:board_list' %}" class="btn my-2 
+    {% if request.path == '/board/' %}btn-secondary{% else %}btn-primary{% endif %}">
+        掲示板一覧
+      </a>
+    </p>
+  </div>
+</section>
+{% endblock %}

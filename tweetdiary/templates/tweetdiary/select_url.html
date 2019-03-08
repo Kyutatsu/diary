@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<div class="bg-light py-2">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 py-md-5">
+        <a class="btn btn-primary btn-lg py-2 my-3" href="https://twitter.com">
+          Twitterへ移動
+        </a>
+      </div>
+      <div class="col-md-6 py-md-5">
+        <a class="btn btn-primary btn-lg py-2 my-3" href="{% url 'drawing:index' %}">
+          イラスト一覧に戻る
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

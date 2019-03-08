@@ -1,0 +1,93 @@
+{% extends 'author/base.html' %}
+
+{% load static %}
+
+{% block body %}
+<div class="bg-light py-2">
+  <div class="container">
+    <form class="col" action="" method="POST">
+      {% csrf_token %}
+      <div class="row pt-3">
+        <div class="col-lg-5">
+          {% if drawings_url_list %}
+            <input type="hidden" name="select_img"
+                   value="{{ now_picture }}" id="select_img">
+            <div class="col-9 align-self-center mb-2 shadow-sm border-bottom p-0">
+              <p class="col text-left font-weight-bold border-bottom text-muted mb-0">
+                選択中のイラスト
+              </p>
+              <img class="img-fluid bg-white" src="{{ now_picture }}" alt='image' id="selected">
+            </div>
+            <nav aria-label="Page navigation example">
+              <ul class="pagination col">
+                <li class="page-item">
+                  <a class="page-link" id="pagination_n" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                {% for i in num_four %}
+                  <li class="page-item page_number">
+                    <a class="page-link" data-loop="{{ forloop.counter0 }}">{{i}}</a>
+                  </li>
+                {% endfor %}
+                <li class="page-item">
+                  <a class="page-link" id="pagination_p" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="row">  
+              {% if drawings_url_list is not None %}
+                {% for drawing_url in drawings_url_list %}
+                  <div class="col-3 col-lg-6">
+                    <img src="{{ drawing_url }}"
+                         class="imgs d-none" id="img{{ forloop.counter }}">
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          {% else %}
+            <h1>画像がありません</h1>
+            <a class="btn btn-secondary mt-2" href="{% url 'drawing:drawing' %}">
+              最初の絵を描く
+            </a>
+          {% endif %}
+        </div>
+
+        <div class="col-lg-7">
+          <label class="border-bottom text-muted font-weight-bold" id="for_move"
+                 for="{{ form.name.id_for_label }}">名前</label>
+          <input type="text" class="form-control shadow-sm border"
+                 id="{{ form.name.id_for_label }}" name="name"
+                 aria-describedby="Help" value="{{ form.name.value }}">
+          <label class="border-bottom text-muted font-weight-bold mt-3" id="for_move"
+                      for="{{ form.birth.id_for_label }}">誕生日</label>
+          {% if form.birth.errors %}
+            <!-- loopして取り出したerrorはhtmlで修飾されてないただの文字列-->
+            {% for error in form.birth.errors %}
+              <div class="alert alert-danger mt-3">{{ error }}</div>
+            {% endfor %}
+          {% endif %}
+          <input type="date" class="form-control shadow-sm border"
+                 id="{{ form.birth.id_for_label }}" name="birth"
+                 aria-describedby="Help" value="{{ form.birth.value|date:"SHORT_DATE_FORMAT" }}"
+                                                placeholder="2000-1-30">
+                                             
+          <label class="border-bottom text-muted mt-3 font-weight-bold"
+                         for="{{ form.text.id_for_label }}">紹介文</label>
+          <textarea class="form-control text-justify border shadow-sm p-2 lines"
+                    name="self_introduction" id="{{ form.self_introduction.id_for_label }}"
+                    style="height: 40vh;">{{ form.self_introduction.value }}</textarea>
+
+          <input type='hidden' name='second' value='True'>
+          <button type="submit" class="btn btn-primary mt-2">更新</button>
+          <a class="btn btn-secondary mt-2"
+                 href="{% url 'drawing:drawing' %}">プロフ画像を描く</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="{% static 'author/profile.js' %}"></script>
+{% endblock %}

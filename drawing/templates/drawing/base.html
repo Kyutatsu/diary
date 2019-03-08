@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+<section class="jumbotron text-center mb-0">
+  <div class="container">
+    <h1 class="jumbotron-heading">イラスト</h1>
+    <p class="lead text-muted">
+      画像ファイルのアップロード、ブラウザ上での簡単なお絵かきができます。</br>
+      書いた画像を絵日記に使ったり、プロフィールに設定しましょう！
+      掲示板に投稿することもできます。
+     twitterアカウントを持っていれば、作成した画像をツイートすることもできます。
+    </p>
+    <p>
+      {% comment %}
+      slice,9は/drawing/(9文字).drawing/drawingならば9文字以降も文字があるのでtureになる
+      {% endcomment %}
+      <a href="{% url 'drawing:index' %}" class="btn my-2
+      {% if request.path|slice:"9:" %}btn-primary{% else %}btn-secondary{% endif %}">
+        絵の一覧
+      </a>
+      <a href="{% url 'drawing:drawing' %}" class="btn my-2
+      {% if request.path|slice:"9:" %}btn-secondary{% else %}btn-primary{% endif %}">
+        絵を描く
+      </a>
+    </p>
+  </div>
+</section>
+{% endblock %}

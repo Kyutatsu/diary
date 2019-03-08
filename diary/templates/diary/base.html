@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+<section class="jumbotron text-center mb-0">
+  <div class="container">
+    <h1 class="jumbotron-heading">日記</h1>
+    <p class="lead text-muted">
+      タイトルと文章に加えて、画像をひとつ添付できるシンプルな絵日記です。</br>
+      画像はイラスト機能から追加したものを利用できます。
+    </p>
+    <p>
+      <a href="{% url 'diary:index' %}" class="btn my-2
+      {% if request.path|slice:"7:" %}btn-primary{% else %}btn-secondary{% endif %}">
+        日記一覧
+      </a>
+      <a href="{% url 'diary:make_diary' %}" class="btn my-2
+      {% if request.path|slice:"7:" %}btn-secondary{% else %}btn-primary{% endif %}">
+        日記を書く
+      </a>
+    </p>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'drawing/base.html' %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'drawing/drawing.css' %}">
+<style>
+#fileSelect {
+   border: solid 1px black; 
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="bg-light">
+  <div class="container">
+    <div class="row pt-3">
+      <div class="col">
+            <canvas class="bg-white" id="canvas"></canvas>
+      </div>
+      <div class="col-lg-2">
+        <img src="{% static 'drawing/icons/pen.svg' %}"
+           title="描画" class="col-lg-10 col-xl-8 col-2 border
+                           img-thumbnail" id="pen" value="pencil">
+        <img src="{% static 'drawing/icons/eraser.svg' %}"
+         title="消しゴム" class="col-lg-10 col-xl-8 col-2" id="era" value="eraser">
+        <img src="{% static 'drawing/icons/re.svg' %}"
+           title="戻る" class="col-lg-10 col-xl-8 col-2" id="backward" value="戻(z)">
+        <img class="col-lg-10 col-xl-8 col-2"
+        title="色" src="{% static 'drawing/icons/color.svg' %}" id="color_img">
+        <input id="color" type="color" class="d-none">
+        <input class="col-lg-10 col-xl-8 col-2" id="width" type="number" min="1" max="50">
+        <img class="col-lg-10 col-xl-8 col-2" src="{% static 'drawing/icons/trash.svg' %}"
+                                                              title="消去" id="deletecanvas">
+        <!--画像取り込み用-->
+        <input type="file" id="fileElement" accept="image/*" class="d-none">
+        <!-- 親rowにdiv噛ませimgだと改行してしまうが、d-inline-blockで一応横配置できた(md以下)
+        d-inlineだとサイズ不明になるから画像に合わせてしまうのがダメ-->
+        <div class="col-lg-10 col-xl-8 d-lg-block d-inline-block col-2 py-2">
+            <img class="bg-white img-fluid rounded shadow-sm"
+            id="fileSelect" src="{% static "drawing/icons/click" %}">
+        </div>
+      </div>
+    </div>
+
+    <div class="row py-2" id="file_upload">
+      <form class="col-auto border-bottom shadow" id="canvas_form" action="" method="POST"
+          enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="id_title" class="font-weight-bold text-muted">タイトル</label>
+        <input type="text" name="title" maxlength="200" required
+                                            value="無題" id="id_title">
+        <input class="d-none" id="id_drawing_base64" type="textarea"
+                          name="drawing_base64" value="" readonly>
+        <input type="submit" id="all_submit" class="d-none">
+      </form>
+
+      {% comment %}
+        pngをbase64形式で落とし,これをinput(type-image)にセットして送信する
+        よくない。
+      {% endcomment %}
+      <button class="col-auto btn btn-success h-25 shadow"
+              type="button" id="drawing_complete" name="drawing_complete"
+              value="complete!">アップロード
+      </button>
+    </div>
+  </div>
+</div>
+<script src="{% static 'drawing/drawing.js' %}"></script>
+{% endblock %}

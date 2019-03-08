@@ -1,0 +1,39 @@
+{% extends 'drawing/base.html' %}
+
+{% load static %}
+
+{% block title_block %}{{ drawingmodel.title }}{% endblock %}
+
+{% block body %}
+<div class="bg-light py-2">
+  <div class="container">
+    <div class="row pt-3">
+      <div class="col-md-6">
+        {% if drawingmodel.drawing.url is not None %}
+        <div id="for_move d-none"></div>
+        <img class="img-fluid rounded bg-white border border-white shadow"
+                        src="{{ drawingmodel.drawing.url }}" alt="drawing">
+        {% endif %}
+      </div>
+      <div class="col-md-6">
+        <h4 class="text-white text-center p-2 my-2 my-md-0 bg-secondary rounded shadow">
+            {{ drawingmodel.title }}
+        </h4>
+
+        <h5 class="text-muted border-bottom pt-1 pt-md-4">投稿日</h5>
+        <h5 class="text-muted">
+          {{ drawingmodel.created_date|date:"y年n月j日 ah:i" }}
+        </h5>
+        <input type="button" class="btn btn-primary shadow"
+            data-next-url={% url 'tweetdiary:tweet_drawing' pk=drawingmodel.id %}
+            id="tweet_button" name="tweet" value="twitterへ投稿">
+        <input type="button" class="btn btn btn-danger shadow"
+           data-next-url="{% url 'drawing:delete' pk=drawingmodel.pk %}"
+           id="delete_button" name="delete" value="delete">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'drawing/confirm.js' %}"></script>
+{% endblock %}

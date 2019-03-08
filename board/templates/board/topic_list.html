@@ -1,0 +1,77 @@
+{% extends "board/base.html" %}
+
+{% load static %}
+{% load mathfilters %}
+
+{% block title_block %}Topics{% endblock %}
+
+{% block body %}
+<div class="py-5 bg-light">
+  <div class="container">
+    <div class="row mb-5 shadow-sm">
+      <div class="col">
+        <h1 class="font-weight-bold">掲示板: {{ board }}</h1>
+      </div>
+    </div>
+    {% if page_obj %}
+      {% for topic in page_obj %}
+        {% comment %}ここpage_objで1page分のtopicsがわたる.{% endcomment %}
+        {% if forloop.counter|mod:3 == 1 %}<div class="row">{% endif %}
+          <div class="col-md-4 shadow-sm">
+            <h3 class="mt-2">
+              <a href="{% url 'board:topic' pk=topic.pk %}">
+                {{ topic.name }}
+              </a>
+            </h3>
+            <h5>作成者: {{ topic.author }}</h5>
+            <p class="mt-4 mb-0">最終更新</p>
+            <p>{{ topic.updated_date|date:"Y年m月d日G時i分" }}</p>
+          </div>
+        {% if forloop.counter|mod:3 == 0 or forloop.last %}</div>{% endif %}
+      {% endfor %}
+    {% else %}
+      <p>Topicがありません</p>
+    {% endif %}
+
+    {% comment %}ページネーション{% endcomment %}
+    <div class="row justify-content-between mt-5">
+      <nav class="col-lg-4 mb-3">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a href="?page={{ page_obj.previous_page_number }}"
+                 class="page-link">&laquo;
+              </a>
+            </li>
+          {% endif %}
+
+          {% for each_page in page_obj.paginator.page_range %}
+            <li class="page-item
+            {% if each_page == page_obj.number %}
+              active
+            {% endif %}
+            ">
+              <a class="page-link" href="?page={{ each_page }}">
+                  {{ each_page }}
+              </a>
+            </li>
+          {% endfor %}
+          
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                &raquo;
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      <div class="col-lg-4 mb-3">
+        <a class="btn btn-primary btn-lg" href="{% url 'board:make_topic' pk=board.id %}">
+          新しいTopicを作る
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

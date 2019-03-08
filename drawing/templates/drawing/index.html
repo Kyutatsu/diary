@@ -1,0 +1,88 @@
+{% extends 'drawing/base.html' %}
+
+{% load static %}
+{% load mathfilters %}
+
+{% block title_block %}絵の一覧{% endblock %}
+{% block head %}{% endblock %}
+
+
+{% block body %}
+<div class="py-5 bg-light">
+  <div class="container">
+    {% if drawings %}
+      {% for drawing in drawings %}
+        {% if forloop.counter|mod:3 == 1 %}<div class="row">{% endif %}
+          <div class="col-md-4">
+            <div class="card mb-4 shadow">
+              {% if drawing.drawing is not None %}
+                <a href="{% url 'drawing:individual' pk=drawing.id %}#for_move">
+                  <img class="card-img-top img-fluid drawing"
+                       src="{{ drawing.drawing.url }}" alt="drawing">
+                </a>
+                <div class="card-body">
+                  <p class="card-text">
+                    {% if drawing.title is not None %}
+                    {{ drawing.title }}
+                    {% endif %}
+                  <p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <a class="btn btn-sm btn-outline-info"
+                         href="{% url 'drawing:individual' pk=drawing.pk %}#for_move">閲覧</a>
+                      <div class="btn btn-sm btn-outline-danger"
+                         data-next-url="{% url 'drawing:delete' pk=drawing.pk %}"
+                         onclick="confDelete2(this);" name="ddd" value="a">削除</div>
+                    </div>
+                  </div>
+                  <small class="text-muted">{{ drawing.created_date|date:"y年n月j日" }}</small>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% if forloop.counter|mod:3 == 0 or forloop.last %}</div>{% endif %}
+      {% endfor %}
+
+      {% comment %}ページネーション{% endcomment %}
+      <div class="row mt-5">
+        <nav class="col-lg-4 mb-3">
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a href="?page={{ page_obj.previous_page_number }}"
+                   class="page-link">
+                  &laquo;
+                </a>
+              </li>
+            {% endif %}
+
+            {% for each_page in page_obj.paginator.page_range %}
+              <li class="page-item
+              {% if each_page == page_obj.number %}
+                active
+              {% endif %}
+              ">
+                <a class="page-link" href="?page={{ each_page }}">
+                    {{ each_page }}
+                </a>
+              </li>
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                    &raquo;
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    {% else %}
+      <h3><a href="{% url 'drawing:drawing' %}">最初の画像を作ろう！</a></h3>
+    {% endif %}
+  </div>
+</div>
+
+<script src="{% static 'drawing/confirm.js' %}"></script>
+{% endblock %}

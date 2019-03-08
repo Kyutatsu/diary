@@ -1,0 +1,10 @@
+canvas {
+    margin: 10px;
+    border: 3px solid #000000;
+}
+
+/*  input要素の属性(type)に"image"があるもの。*/
+input[type="image"]{
+    padding: 2px;
+    outline: none;
+}
