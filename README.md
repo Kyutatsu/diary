@@ -39,5 +39,25 @@ Web開発の練習を目的として作成したWebアプリケーションで�
 - API(Twitter API)との連携: twitterへの画像投稿(ツイート)機能
   - tweetdiary/views.pyに実装しています。Drawingのdetail viewからツイッターに画像投稿が可能です。Twitter APIとのやりとりにrequests_oauthlibを利用しています。Drawing appで作成した画像は透過png形式でtwitter投稿には不適ですので、PILを利用して透過部分を白色に変換してからツイートしています。取得したアクセスキーはセッションに保存し、なんどもログインすることを防いでいます。
 
+
 ![fig2](https://github.com/Kyutatsu/diary/blob/pictures/fig2.png)
 ![fig3](https://github.com/Kyutatsu/diary/blob/pictures/fig3.png)
+2.	JavaScript
+基本的な要素の取得や変更以外に、canvas要素やスマートホンのタッチイベントなどを利用できます。
+・	canvas要素を利用したブラウザ上でのお絵かき機能
+➢	drawing/static/drawing/drawing.jsに実装しています。PCでもスマートホンでも利用可能です。画像をアップロードし、それを元に加筆することもできます(“CLICKして選ぶ”を押すか、ドラッグ&ドロップで画像をcanvasに落とせます)。Base64形式でcanvasからデータを取り出し、drawing/views.pyのline41で、デコードし、ファイルオブジェクトに変換して保存しています。
+・	画像選択
+➢	diary/static/diary/pictures.jsなど。これまで描いた画像から、diaryに使用する画像を選択します。ページ内で、擬似的にPaginationのように画像が表示されるようにしています。
+
+3.	Bootstrap
+・	すべてのテンプレートにおいてBootstrapを利用し、レスポンシブ対応にしています。
+
+
+[作成時に注意したところ]
+・機能ごとにアプリケーションをなるべく細かく分け、「一つのアプリケーションには一つの仕事をさせる」ことを目指しました。個々のアプリケーションが再利用可能となるよう、意識を払いました。結局、満足のいく出来ではありませんでしたが、反省を活かして次はもっと独立した設計にできると思います。
+
+[反省点]
+設計が不十分であり、冗長な部分が多くできてしまいました。例えば、author appはDjangoのUserオブジェクトに対して生年月日などの情報を付加するだけの機能を与えるつもりで作成しましたが、author/models.pyで定義したAuthorオブジェクトをdrawingやdiaryで利用してしまいました。絵や日記を個人に結びつけるためにAuthorを使用していますが、この目的からはUserオブジェクトで十分でした。修正予定です。
+また、各modelに不要なfieldが存在します。Drawingモデルのdrawing_base64フィールドは不要であり、データベースを圧迫するだけのものとなっています。修正予定です。
+全体的にこのようなミスにより、効率が悪く他者から読みづらいコードになってしまったと思います。論理的に正しく、無駄のない読みやすい構造を目指そうと反省しています。
+
