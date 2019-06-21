@@ -50,13 +50,17 @@
       <input class="form-control" type="text" name="username" id="id_username">
       <label for="id_password">PassWord:</label>
       <input class="form-control" type="password" name="password" id="id_password">
-      <button type="submit" class="btn btn-lg btn-primary btn-block mt-3" value="login">
+      <button id="login" type="submit"
+              class="btn btn-lg btn-primary btn-block mt-3" value="login">
           ログイン
       </button>
       <a class="btn btn-lg btn-secondary btn-block mt-4"
          href="{% url 'author:registration' %}?next={{ request.path }}">
         新規アカウントを作る
       </a>
+      <button id="testuserlogin" class="btn btn-lg btn-outline-primary btn-block mt-4">
+        テストユーザとしてログイン
+      </button>
       {% if next == '/accounts/logout/' %}
         <input type="hidden" name="next" value="{% url 'diary:index' %}">
       {% else %}
@@ -69,4 +73,17 @@
       </a>
     </p-->
   </div>
+  <script>
+    var testuser = document.getElementById('testuserlogin');
+    var username = document.getElementById('id_username');
+    var password = document.getElementById('id_password');
+    var login = document.getElementById('login');
+    testuser.addEventListener('click', testlogin);
+    function testlogin () {
+      // jsで書くの良く無い？ この垢は機能制限してるから良い？
+      username.setAttribute('value', 'djangotest');
+      password.setAttribute('value', 'djangotest');
+      login.click()
+    }
+  </script>
 {% endblock %}
