@@ -56,13 +56,27 @@
             </p>
           </figcaption>
         </figure>
+        {% if perms.diary.change_article %}
         <a class="editting btn btn-sm btn-outline-info shadow my-2"
            href="{% url 'diary:update_diary' pk=article.pk %}#for_move">
           編集
         </a>
+        {% else %}
+        <button id="changeDiaryNoPerm"
+                class="editting btn btn-sm btn-outline-info shadow my-2">
+          編集
+        </button>
+        {% endif %}
+        {% if perms.diary.delete_article %}
         <input type="button" id="delete" value="削除"
                  class="btn btn-sm btn-outline-danger shadow my-2"
                  data-next-url="{% url 'diary:delete_diary' pk=article.pk %}">
+        {% else %}
+        <button id="deleteDiaryNoPerm"
+                class="btn btn-sm btn-outline-danger shadow my-2">
+          削除
+        </button>
+        {% endif %}
       </div>
 
       <div class="col-lg-7">
@@ -77,4 +91,13 @@
   </div>
 </div>
 <script src="{% static 'diary/confirm.js' %}"></script>            
+{% endblock %}
+
+{% block scripts2 %}
+<script>
+  var deleteDiaryLinkWithNoPerm = document.getElementById('deleteDiaryNoPerm');
+  deleteDiaryLinkWithNoPerm.addEventListener('click', noPermPop);
+  var changeDiaryLinkWithNoPerm = document.getElementById('changeDiaryNoPerm');
+  changeDiaryLinkWithNoPerm.addEventListener('click', noPermPop);
+</script>
 {% endblock %}

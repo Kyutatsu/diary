@@ -19,11 +19,26 @@
       {% if request.path|slice:"9:" %}btn-primary{% else %}btn-secondary{% endif %}">
         絵の一覧
       </a>
+      
+      {% if perms.drawing.add_drawingmodel %}
       <a href="{% url 'drawing:drawing' %}" class="btn my-2
       {% if request.path|slice:"9:" %}btn-secondary{% else %}btn-primary{% endif %}">
         絵を描く
       </a>
+      {% else %}
+      <button id="addDrawingNoPerm2" class="btn my-2
+      {% if request.path|slice:"9:" %}btn-secondary{% else %}btn-primary{% endif %}">
+        絵を描く
+      </button>
+      {% endif %}
     </p>
   </div>
 </section>
+{% endblock %}
+
+{% block scripts1 %}
+  <script>
+    var addDrawingNoPerm2 = document.getElementById('addDrawingNoPerm2');
+    addDrawingNoPerm2.addEventListener('click', noPermPop);
+  </script>
 {% endblock %}

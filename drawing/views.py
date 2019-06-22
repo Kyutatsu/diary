@@ -1,7 +1,9 @@
 import codecs
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.core.files.base import ContentFile
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.http import HttpResponseRedirect
@@ -30,7 +32,7 @@ class IndividualView(LoginRequiredMixin, generic.DetailView):
     model = DrawingModel
 
 
-@login_required
+@permission_required('drawing.delete_drawingmodel')
 def delete(request, pk):
     '''絵を削除する'''
     drawing = get_object_or_404(DrawingModel, pk=pk)
@@ -38,8 +40,9 @@ def delete(request, pk):
     return redirect('drawing:index')
 
 
-class DrawingView(LoginRequiredMixin, generic.View):
+class DrawingView(PermissionRequiredMixin, generic.View):
     '''絵を描く, アップロードする'''
+    permission_required = 'drawing.add_drawingmodel'
     template_name = 'drawing/drawing.html'
 
     def get(self, request):

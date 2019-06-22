@@ -23,7 +23,7 @@ class AuthorProfile(generic.View):
                 self.template_name_for_read,
                 {'author': author, 'email': request.user.email},
         )
-
+    @permission_required('author.change_author')
     def post(self, request):
         check = request.POST.get('second', None)
         author = get_object_or_404(Author, user=request.user)

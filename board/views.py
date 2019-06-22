@@ -3,7 +3,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views import generic
 from django.core.paginator import Paginator
 from django.urls import reverse
@@ -74,11 +76,12 @@ class TopicIndividualView(LoginRequiredMixin, generic.DetailView):
 
 
 # https://docs.djangoproject.com/en/2.1/topics/class-based-views/generic-editing/
-class TopicCreate(LoginRequiredMixin, generic.edit.CreateView):
+class TopicCreate(PermissionRequiredMixin, generic.edit.CreateView):
     """Topicを新規作成するview.
 
     Boardの表示viewからリンクでここに飛ぶ
     """
+    permission_required = 'board.add_topic'
     model = Topic
     fields = ['name']
 
@@ -92,7 +95,7 @@ class TopicCreate(LoginRequiredMixin, generic.edit.CreateView):
         return super().form_valid(form)
 
 
-@login_required
+@permission_required('board.add_post')
 def make_post(request, pk):
     """topicに対して投稿するためのview.
     

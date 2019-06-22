@@ -91,10 +91,24 @@
     {% endfor %}
     <div class="row">
       <div class="col">
-        <a href="{% url 'board:make_post' pk=topic.id %}"
-           class="btn btn-lg my-4 shadow-sm font-weight-bold btn-primary">投稿</a>
+        {% if perms.board.add_post %}
+          <a href="{% url 'board:make_post' pk=topic.id %}"
+             class="btn btn-lg my-4 shadow-sm font-weight-bold btn-primary">投稿</a>
+        {% else %}
+          <button id="addPostNoPerm"
+                  class="btn btn-lg my-4 shadow-sm font-weight-bold btn-primary">
+            投稿
+          </button>
+        {% endif %}
       </div>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts2 %}
+  <script>
+    var addPostNoPerm = document.getElementById('addPostNoPerm');
+    addPostNoPerm.addEventListener('click', noPermPop);
+  </script>
 {% endblock %}

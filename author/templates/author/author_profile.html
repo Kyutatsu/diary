@@ -15,11 +15,18 @@
                class="img-fluid rounded-circle shadow-sm bg-white">
         {% endif %}
 
-        <form action="" method='POST'>
-          {% csrf_token %}
-          <input class="mt-5 btn btn-sm btn-outline-info shadow my-2"
-                 type='submit' value='更新'>
-        </form>
+        {% if perms.author.change_author %}
+          <form action="" method='POST'>
+            {% csrf_token %}
+              <input class="mt-5 btn btn-sm btn-outline-info shadow my-2"
+                     type='submit' value='更新'>
+          </form>
+        {% else %}
+          <button id="changeAuthorNoPerm"
+                  class="mt-5 btn btn-sm btn-outline-info shadow my-2">
+            更新
+          </button>
+        {% endif %}
       </div>
 
       <div class="col-lg-7 p-3">
@@ -52,4 +59,11 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts2 %}
+  <script>
+    var changeAuthorNoPerm = document.getElementById('changeAuthorNoPerm');
+    changeAuthorNoPerm.addEventListener('click', noPermPop);
+  </script>
 {% endblock %}

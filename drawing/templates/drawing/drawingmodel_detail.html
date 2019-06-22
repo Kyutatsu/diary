@@ -27,13 +27,26 @@
         <input type="button" class="btn btn-primary shadow"
             data-next-url={% url 'tweetdiary:tweet_drawing' pk=drawingmodel.id %}
             id="tweet_button" name="tweet" value="twitterへ投稿">
+        {% if perms.drawing.delete_drawingmodel %}
         <input type="button" class="btn btn btn-danger shadow"
            data-next-url="{% url 'drawing:delete' pk=drawingmodel.pk %}"
-           id="delete_button" name="delete" value="delete">
+           id="delete_button" name="delete" value="削除">
+        {% else %}
+        <button id="deleteDrawingNoPerm" class="btn btn btn-danger shadow">
+          削除
+        </button>
+        {% endif %}
       </div>
     </div>
   </div>
 </div>
 
 <script src="{% static 'drawing/confirm.js' %}"></script>
+{% endblock %}
+
+{% block scripts2 %}
+<script>
+  var deleteDrawingNoPerm = document.getElementById('deleteDrawingNoPerm');
+  deleteDrawingNoPerm.addEventListener('click', noPermPop);
+</script>
 {% endblock %}

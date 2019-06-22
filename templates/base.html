@@ -10,6 +10,7 @@ body内
     header: <nav>の直下のスペース
     aside: <aside>内.
     body: <article>内.bodyのメインコンテンツ。
+    scripts: bodyの最下層。追加のjs(あまり使いたく無い)
 {% endcomment %}
 <html lang='ja'>
   <head>
@@ -50,8 +51,11 @@ body内
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item"href="{% url 'diary:index' %}">日記一覧</a>
-
-              <a class="dropdown-item" href="{% url 'diary:make_diary' %}">日記を書く</a>
+              {% if perms.diary.add_article %}
+                <a class="dropdown-item" href="{% url 'diary:make_diary' %}">日記を書く</a>
+              {% else %}
+                <button id="addDiaryNoPerm" class="dropdown-item"> 日記を書く </button>
+              {% endif %}
             </div>
           </li>
           <li class="nav-item dropdown
@@ -62,7 +66,13 @@ body内
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="{% url 'drawing:index' %}">絵の一覧</a>
-              <a class="dropdown-item" href="{% url 'drawing:drawing' %}">絵を描く</a>
+              {% if perms.drawing.add_drawingmodel %}
+                <a class="dropdown-item" href="{% url 'drawing:drawing' %}">絵を描く</a>
+              {% else %}
+                <button id="addDrawingNoPerm" class="dropdown-item">
+                  絵を描く
+                </button>
+              {% endif %}
             </div>
           </li>
           <li class="nav-item dropdown
@@ -122,6 +132,17 @@ body内
         <p class="text-muted">© 2018 Kyutatsu</p>
       </div>
     </footer>
+    <script>
+      var addDiaryNoPerm = document.getElementById('addDiaryNoPerm');
+      var addDrawingNoPerm = document.getElementById('addDrawingNoPerm');
+      addDiaryNoPerm.addEventListener('click', noPermPop);
+      addDrawingNoPerm.addEventListener('click', noPermPop);
+      function noPermPop () {
+          window.alert('テストユーザはこの機能を使えません。\n画面右上の"djangotest"をクリックしてログアウトし、ご自身のアカウントを作成してください。')
+      }
+    </script>
+    {% block scripts1 %}{% endblock %}
+    {% block scripts2 %}{% endblock %}
 
     <script src={% static "node_modules/jquery/dist/jquery.slim.min.js" %}></script>
     <script src={% static "node_modules/popper.js/dist/umd/popper.min.js" %}></script>

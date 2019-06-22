@@ -67,11 +67,25 @@
         </ul>
       </nav>
       <div class="col-lg-4 mb-3">
-        <a class="btn btn-primary btn-lg" href="{% url 'board:make_topic' pk=board.id %}">
-          新しいTopicを作る
-        </a>
+        {% if perms.board.add_topic %}
+          <a class="btn btn-primary btn-lg"
+             href="{% url 'board:make_topic' pk=board.id %}">
+            新しいTopicを作る
+          </a>
+        {% else %}
+          <button id="addTopicNoPerm" class="btn btn-primary btn-lg">
+            新しいTopicを作る
+          </button>
+        {% endif %}
       </div>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts2 %}
+  <script>
+    var addTopicNoPerm = document.getElementById('addTopicNoPerm');
+    addTopicNoPerm.addEventListener('click', noPermPop);
+  </script>
 {% endblock %}

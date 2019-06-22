@@ -39,11 +39,17 @@
                        href="{% url 'diary:individual' pk=diary.pk %}#for_move">
                   閲覧
                 </a>
+                {% if perms.diary.delete_article %}
                 <div class="btn btn-sm btn-outline-danger shadow-sm"
                      data-next-url="{% url 'diary:delete_diary' pk=diary.pk %}"
                      onclick="confDelete2(this);" name="ddd" value="a">
                   削除
                 </div>
+                {% else %}
+                <button class="deleteDiaryNoPerm btn btn-sm btn-outline-danger shadow-sm">
+                  削除
+                </button>
+                {% endif %}
               </div>
             </div>
             <p class="col align-self-end small text-muted shadow-sm text-right
@@ -100,8 +106,15 @@
 {% else %}
 <h3><a href="{% url 'diary:make_diary' %}">さいしょのにっきをかこう！</a></h3>
 {% endif %}
-
-<script src="{% static 'diary/confirm.js' %}"></script>
-
 {% endblock %}
 
+
+{% block scripts2 %}
+<script src="{% static 'diary/confirm.js' %}"></script>
+<script>
+  var deleteDiaryNoPerms = document.getElementsByClassName('deleteDiaryNoPerm');
+  for (i=0; i < deleteDiaryNoPerms.length; i++){
+    deleteDiaryNoPerms[i].addEventListener('click', noPermPop);
+  }
+</script>
+{% endblock %}

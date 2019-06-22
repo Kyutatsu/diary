@@ -14,12 +14,26 @@
       {% if request.path|slice:"7:" %}btn-primary{% else %}btn-secondary{% endif %}">
         日記一覧
       </a>
-      <a href="{% url 'diary:make_diary' %}" class="btn my-2
-      {% if request.path|slice:"7:" %}btn-secondary{% else %}btn-primary{% endif %}">
-        日記を書く
-      </a>
+      {% if perms.diary.add_article %}
+        <a href="{% url 'diary:make_diary' %}" class="btn my-2
+          {% if request.path|slice:"7:" %}btn-secondary{% else %}btn-primary{% endif %}">
+          日記を書く
+        </a>
+      {% else %}
+        <button id="addDiaryNoPerm2" class="btn my-2
+          {% if request.path|slice:"7:" %}btn-secondary{% else %}btn-primary{% endif %}">
+          日記を書く
+        </button>
+      {% endif %}
     </p>
   </div>
 </section>
-
 {% endblock %}
+
+{% block scripts1 %}
+<script>
+  var addDiaryNoPerm2 = document.getElementById('addDiaryNoPerm2');  
+  addDiaryNoPerm2.addEventListener('click', noPermPop);
+</script>
+{% endblock %}
+

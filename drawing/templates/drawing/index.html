@@ -30,9 +30,15 @@
                     <div class="btn-group">
                       <a class="btn btn-sm btn-outline-info"
                          href="{% url 'drawing:individual' pk=drawing.pk %}#for_move">閲覧</a>
+                      {% if perms.drawing.delete_draingmodel %}
                       <div class="btn btn-sm btn-outline-danger"
                          data-next-url="{% url 'drawing:delete' pk=drawing.pk %}"
                          onclick="confDelete2(this);" name="ddd" value="a">削除</div>
+                      {% else %}
+                      <button class="deleteDrawingNoPerm btn btn-sm btn-outline-danger">
+                        削除
+                      </button>
+                      {% endif %}
                     </div>
                   </div>
                   <small class="text-muted">{{ drawing.created_date|date:"y年n月j日" }}</small>
@@ -84,5 +90,15 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block scripts2 %}
 <script src="{% static 'drawing/confirm.js' %}"></script>
+<script>
+  var deleteDrawingNoPerms = document.getElementsByClassName('deleteDrawingNoPerm');
+  for (i=0; i < deleteDrawingNoPerms.length; i++) { 
+    deleteDrawingNoPerms[i].addEventListener('click', noPermPop);
+  }
+  deleteDrawingNoPerm.addEventListener('click', noPermPop);
+</script>
 {% endblock %}

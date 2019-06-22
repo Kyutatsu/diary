@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
@@ -52,7 +53,7 @@ class IndividualView(LoginRequiredMixin, generic.View):
             return HttpResponseForbidden()
 
 
-@login_required
+@permission_required('diary.add_article')
 def make_diary(request):
     '''あたらしい日記を作成する'''
     author = get_object_or_404(Author, user=request.user)
@@ -82,6 +83,7 @@ def make_diary(request):
         })
 
 
+@permission_required('diary.change_article')
 def update_diary(request, pk):
     '''日記を編集する'''
     diary = get_object_or_404(Article, pk=pk)
@@ -112,7 +114,7 @@ def update_diary(request, pk):
     )
 
 
-@login_required
+@permission_required('diary.delete_article')
 def delete_diary(request, pk):
     """日記の削除
     
