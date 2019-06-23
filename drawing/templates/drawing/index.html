@@ -30,7 +30,7 @@
                     <div class="btn-group">
                       <a class="btn btn-sm btn-outline-info"
                          href="{% url 'drawing:individual' pk=drawing.pk %}#for_move">閲覧</a>
-                      {% if perms.drawing.delete_draingmodel %}
+                      {% if perms.drawing.delete_drawingmodel %}
                       <div class="btn btn-sm btn-outline-danger"
                          data-next-url="{% url 'drawing:delete' pk=drawing.pk %}"
                          onclick="confDelete2(this);" name="ddd" value="a">削除</div>
