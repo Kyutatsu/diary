@@ -1,6 +1,6 @@
 # diary
 Web開発の練習として作成したWebアプリケーションです。[こちら](https://qtatsu.com)からぜひお試しください。
-<iframe src="https://github.com/Kyutatsu/diary/blob/pictures/diary.mp4"></iframe>
+
 ## 機能概要
 絵日記をイメージしたアプリケーションです。まずブラウザ上でお絵かきした画像を登録します(fileをuploadでもOK)。画像を元に絵日記を作成、掲示板に投稿、また連携すればclick一つでtwitterに投稿することができます。
 
