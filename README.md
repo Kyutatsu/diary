@@ -15,12 +15,15 @@ Web開発の練習として作成したWebアプリケーションです。[こ�
 - クライアントサイド
   - JavaScript
   - Bootstrap
-- インフラ
+- インフラ: もう一つのアプリ(imagesFromTwitter)をサブドメインで公開してます。
   - Linux(CentOS7)
   - Apache
+  - mod_wsgi
+    - Daemon modeで使用してます。
   - MySQL
 - その他(デプロイ, バージョン管理, 開発)
   - VPS(独自ドメインを取得し、さくらのVPSを借りて公開しています)
+  - SSL(Let's Encrypt)
   - Git
   - Vim
   - Vagrant, VirtualBox: デプロイの練習に使用した。
